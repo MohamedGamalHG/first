@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
+namespace TR\Product\Services;
+
+
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-/**
- * Class ProductController
- * @package App\Http\Controllers
- */
-class ProductController extends Controller
+class ProductService
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +18,7 @@ class ProductController extends Controller
     {
 
         $products = Product::paginate();
-        //return (request()->input('page', 1) - 1) * $products->perPage();
+
         return view('product.index', compact('products'))
             ->with('i', (request()->input('page', 1) - 1) * $products->perPage());
     }
@@ -43,8 +40,10 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
+        request()->validate(Product::$rules);
+
         $product = Product::create($request->all());
 
         return redirect()->route('products.index')
@@ -84,8 +83,10 @@ class ProductController extends Controller
      * @param  Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(Request $request, Product $product)
     {
+        request()->validate(Product::$rules);
+
         $product->update($request->all());
 
         return redirect()->route('products.index')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductDetailRequest;
 use App\Models\ProductDetail;
 use Illuminate\Http\Request;
 
@@ -41,10 +42,8 @@ class ProductDetailController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductDetailRequest $request)
     {
-        request()->validate(ProductDetail::$rules);
-
         $productDetail = ProductDetail::create($request->all());
 
         return redirect()->route('product-details.index')
@@ -84,10 +83,8 @@ class ProductDetailController extends Controller
      * @param  ProductDetail $productDetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductDetail $productDetail)
+    public function update(ProductDetailRequest $request, ProductDetail $productDetail)
     {
-        request()->validate(ProductDetail::$rules);
-
         $productDetail->update($request->all());
 
         return redirect()->route('product-details.index')
